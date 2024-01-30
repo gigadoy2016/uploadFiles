@@ -1,8 +1,7 @@
-var express = require("express");                           //import express ด้วยการใช้ require
-var app = express();                                        //set express ไว้เป็นตัวแปร app
+const express = require("express");                           //import express ด้วยการใช้ require
 const multer  = require('multer');
-const PORT = 3001;                                          //set ตัวแปร port เท่ากับ 3001
-
+const app = express();                                        //set express ไว้เป็นตัวแปร app
+const PORT = 3001;                                            //set ตัวแปร port เท่ากับ 3001
 
 const storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -12,7 +11,7 @@ const storage = multer.diskStorage({
       callback(null, file.originalname) //ให้ใช้ชื่อไฟล์ original เป็นชื่อหลังอัพโหลด
     },
 })
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 
 //ใช้ get เพื่อเรียกไฟล์ index.html
@@ -20,9 +19,8 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html')
 });
 
-//ใช้ post เพื่อรองรับการ upload
-app.post('/upload', upload.single('photo'), (req, res) => {
-    res.send(req.file)
+app.post('/upload', upload.array('files', 10), function (req, res, next) {  // '10' คือจำนวนสูงสุดของไฟล์ที่อัปโหลดได้  
+  res.send('Files uploaded successfully!');
 });
 
 app.listen(PORT, () => {
