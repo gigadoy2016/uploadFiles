@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Uploader</title>
+    <style>
+        .document_file{
+            background-color: rgb(203, 231, 177); 
+            width:500px;
+            padding: 5px;
+        }
+        .document_add{
+            background-color: rgb(203, 231, 177); 
+            width:500px;
+            padding: 5px;
+            text-align: right;
+        }
+        .document_submit{
+            padding: 5px;
+            width:500px;
+            background-color: orange;
+        }
+
+    </style>
+    <script>
+        function clickMore() {
+            var file_container = document.getElementById("fileContainer");
+            var number = file_container.childElementCount;
+            console.log("clickMore() :"+number);
+            var obj = document.createElement("INPUT");
+            obj.setAttribute("type", "file");
+            obj.setAttribute("name", "files");
+            var divObj = document.createElement("DIV");
+            divObj.setAttribute("class", "document_file");
+            divObj.appendChild(obj);
+            
+            file_container.appendChild(divObj);
+        }
+        function displayFile(obj){
+            var files = document.getElementsByName('file');
+            console.log(files.length);
+            console.log(files);
+        }
+    </script>
+    
+</head>
+<body>
+    <h1>Please upload file</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <div id="fileContainer">
+            <div class="document_file">
+                <input type="file" name="files"/>
+            </div>
+        </div>
+        <div class="document_add">
+            <a href="#" onclick="clickMore()">+more</a>
+            <!-- <a href="#" onclick="displayFile()">+test</a> -->
+        </div>
+        <div class="document_submit">
+            <input type="submit" value="Submit">
+        </div>
+        
+    </form>
+</body>
+</html>
