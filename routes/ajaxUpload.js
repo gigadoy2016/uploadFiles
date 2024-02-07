@@ -7,11 +7,9 @@ const debug = new Debug(true,"AjaxUpload.js");
 // ถอยกลับมาหนึ่งระดับจาก __dirname
 const parentDir = path.dirname(__dirname);
 
-
-debug.debugLog("+++++++++++++++++++++++++++++++++++++++");
 router.get('/',function(req,res){
-    debug.debugLog("router multiFiles");
-    res.sendFile(parentDir + '/views/sample_01.html');
+    debug.debugLog("router ajaxUpload");
+    res.status(200).send("{'status':'OK'}");
 });
 
 module.exports = router;
