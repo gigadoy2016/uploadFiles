@@ -1,7 +1,7 @@
 const express = require('express');
 const multer  = require('multer');
-const {Debug} = require("../class/Debug");
-const {  Time } = require('../class/Time');
+const { Debug } = require("../class/Debug");
+const { Time } = require('../class/Time');
 const path = require('path') // เรียกใช้งาน path module
 const router = express.Router();
 const now = new Time();
@@ -26,17 +26,12 @@ const upload = multer({ storage: storage });
 
 router.get('/',function(req,res){
     debug.debugLog("router Upload");
-    res.status(200).send("{'status':'OK'}");
-});
-router.get('/ajax',function(req,res){
-    debug.debugLog("router Upload Ajax");
-    res.status(200).json("{'status':'OK'}");
+    res.status(200).json({'status':'OK'});
 });
 
 router.post('/', upload.array('files', 10), function (req, res, next) {  // '10' คือจำนวนสูงสุดของไฟล์ที่อัปโหลดได้  
     res.send('Files uploaded successfully!');
 });
-
 
 
 module.exports = router;

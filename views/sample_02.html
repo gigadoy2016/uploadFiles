@@ -24,13 +24,20 @@
 
     </style>
     <script>
+        var number
+        var file_id = 0;
+        var doc_id = 0;
+
         function clickMore() {
-            var file_container = document.getElementById("fileContainer");
+            var file_container = document.getElementById("container");
             var number = file_container.childElementCount;
             console.log("clickMore() :"+number);
             var obj = document.createElement("INPUT");
+            const obj_id = "f_"+file_id;
             obj.setAttribute("type", "file");
             obj.setAttribute("name", "files");
+            obj.setAttribute("id", obj_id);
+            
             var divObj = document.createElement("DIV");
             divObj.setAttribute("class", "document_file");
             divObj.appendChild(obj);
@@ -42,25 +49,51 @@
             console.log(files.length);
             console.log(files);
         }
+
+        async function uploadFile() {
+            let formData = new FormData();
+
+            const fileDocs = document.querySelectorAll('input[name="files"]');
+            fileDocs.forEach(function(input){
+                input.addEventListener('change',function(){
+                    const file = this.files[0];
+                    const fileName = file.name;
+                    console.log(fileName);
+                });
+            });
+            // formData.append("file", fileupload.files[0]);
+            // let ans = await fetch('ajaxUpload/ajax', {
+            //     method: "POST", 
+            //     body: formData
+            // }).then(function(res){ 
+            //     console.log(res.json());
+            // } ).catch(function(err){
+            //     console.log(err);
+            // }).finally(function(res){
+            //     console.log("--Final------");
+            //     alert('The file has been uploaded successfully.');
+            // });
+            // console.log(ans.json());
+        }
+
     </script>
     
 </head>
 <body>
     <h1>Please upload file</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <div id="fileContainer">
-            <div class="document_file">
-                <input type="file" name="files"/>
-            </div>
-        </div>
+    <div id="container">
+        Ajax
+        <div class="document_file">
+            <input type="file" name="files" />      
+        </div>        
+    </div>
+    <div>
         <div class="document_add">
             <a href="#" onclick="clickMore()">+more</a>
-            <!-- <a href="#" onclick="displayFile()">+test</a> -->
         </div>
         <div class="document_submit">
-            <input type="submit" value="Submit">
+            <button id="upload-button" onclick="uploadFile()"> Upload </button>
         </div>
-        
-    </form>
+    </div>
 </body>
 </html>
