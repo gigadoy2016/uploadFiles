@@ -30,8 +30,11 @@ router.get('/',function(req,res){
 });
 
 router.post('/', upload.array('files', 10), function (req, res, next) {  // '10' คือจำนวนสูงสุดของไฟล์ที่อัปโหลดได้  
-    res.send('Files uploaded successfully!');
+  debug.debugLog("--Method POST -> router Upload");  
+  res.send('Files uploaded successfully!');
 });
+
+
 
 
 module.exports = router;

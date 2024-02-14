@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Uploader</title>
+    <style>
+        .document_file{
+            background-color: rgb(203, 231, 177); 
+            width:500px;
+            padding: 5px;
+        }
+        .document_add{
+            background-color: rgb(203, 231, 177); 
+            width:500px;
+            padding: 5px;
+            text-align: right;
+        }
+        .document_submit{
+            padding: 5px;
+            width:500px;
+            background-color: orange;
+        }
+
+    </style>
+    <script>
+        const URL = '../ajaxUpload/a';
+        var number
+        var file_id = 0;
+        var doc_id = 0;
+        const file_container = document.getElementById("container");
+
+        function clickMoreFile() {
+            
+            var number = file_container.childElementCount;
+            console.log("clickMore() :"+number);
+            // var obj = document.createElement("INPUT");
+            // const obj_id = "f_"+file_id;
+            // obj.setAttribute("type", "file");
+            // obj.setAttribute("name", "files");
+            // obj.setAttribute("id", obj_id);
+            // obj.setAttribute("onchange","uploadFile(this)")
+
+            // var divObj = document.createElement("DIV");
+            // divObj.setAttribute("class", "document_file");
+            // divObj.appendChild(obj);
+            
+            // file_container.appendChild(divObj);
+        }
+        function displayFile(obj){
+            var files = document.getElementsByName('file');
+            console.log(files.length);
+            console.log(files);
+        }
+
+        async function uploadFile(obj) {
+            let formData = new FormData();
+            const file = obj.files[0];
+            console.log(file.name);
+            
+            formData.append("file", obj.files[0]);
+            let ans = await fetch(URL, {
+                method: "POST", 
+                body: formData
+            }).then(function(res){ 
+                console.log(res.json());
+            } ).catch(function(err){
+                console.log(err);
+            }).finally(function(res){
+                obj.remove();
+                document.getElementById("filesLibrary").innerHTML='<label>'+file.name+'<label>';
+                console.log("--Final------");
+            });
+            // console.log(ans.json());
+        }
+        function newElement(text){
+
+        }
+
+    </script>
+    
+</head>
+<body>
+    <h1>Please upload file</h1>
+    <div id="container">
+        <div>Ajax</div>
+        <div class="document_file" id ="filesLibrary">
+            <input type="file" name="files" onchange="uploadFile(this)"/>      
+        </div>        
+    </div>
+    <div>
+        <div class="document_add">
+            <a href="#" onclick="clickMoreFile()">+more</a>
+        </div>
+    </div>
+</body>
+</html>
