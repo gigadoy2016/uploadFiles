@@ -40,6 +40,7 @@ router.post('/',function(req,res){
 
 router.post('/ajax', upload.array('files', 10), function (req, res, next) {  // '10' คือจำนวนสูงสุดของไฟล์ที่อัปโหลดได้  
   debug.debugLog("--Method POST -> router ajaxUpload");
+  
   res.status(200).json({'status':'Upload OK'});
 });
 

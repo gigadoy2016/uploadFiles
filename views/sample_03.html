@@ -26,26 +26,29 @@
     <script>
         const URL = '../ajaxUpload/a';
         var number
-        var file_id = 0;
+        var file_id = 1;
         var doc_id = 0;
-        const file_container = document.getElementById("container");
-
+        
         function clickMoreFile() {
-            
+            const file_container = document.getElementById("container");    
             var number = file_container.childElementCount;
-            console.log("clickMore() :"+number);
-            // var obj = document.createElement("INPUT");
-            // const obj_id = "f_"+file_id;
-            // obj.setAttribute("type", "file");
-            // obj.setAttribute("name", "files");
-            // obj.setAttribute("id", obj_id);
-            // obj.setAttribute("onchange","uploadFile(this)")
 
-            // var divObj = document.createElement("DIV");
-            // divObj.setAttribute("class", "document_file");
-            // divObj.appendChild(obj);
+            var obj = document.createElement("INPUT");
+            const obj_id = "f_"+file_id;
+
+            console.log("clickMore() :"+obj_id);
+            obj.setAttribute("type", "file");
+            obj.setAttribute("name", "files");
             
-            // file_container.appendChild(divObj);
+            obj.setAttribute("onchange","uploadFile(this,'"+obj_id+"')");
+
+            var divObj = document.createElement("DIV");
+            divObj.setAttribute("id", obj_id);
+            divObj.setAttribute("class", "document_file");
+            divObj.appendChild(obj);
+            
+            file_container.appendChild(divObj);
+            file_id++;
         }
         function displayFile(obj){
             var files = document.getElementsByName('file');
@@ -53,7 +56,8 @@
             console.log(files);
         }
 
-        async function uploadFile(obj) {
+        async function uploadFile(obj,file_id) {
+            console.log('id:'+file_id);
             let formData = new FormData();
             const file = obj.files[0];
             console.log(file.name);
@@ -66,15 +70,20 @@
                 console.log(res.json());
             } ).catch(function(err){
                 console.log(err);
-            }).finally(function(res){
-                obj.remove();
-                document.getElementById("filesLibrary").innerHTML='<label>'+file.name+'<label>';
+            }).finally(async function(res){
+                obj.remove();    
+                newElement(file_id,file.name);
                 console.log("--Final------");
             });
             // console.log(ans.json());
         }
-        function newElement(text){
+        function newElement(file_id,fileName){
+            // document.getElementById("filesLibrary").innerHTML='<label>'+file.name+'<label>';            
+            let objDiv = document.getElementById(file_id);
+            let objSpan = document.createElement("SPAN");
+            objSpan.innerHTML = fileName;
 
+            objDiv.appendChild(objSpan);
         }
 
     </script>
@@ -84,8 +93,8 @@
     <h1>Please upload file</h1>
     <div id="container">
         <div>Ajax</div>
-        <div class="document_file" id ="filesLibrary">
-            <input type="file" name="files" onchange="uploadFile(this)"/>      
+        <div class="document_file" id ="f_0">
+            <input type="file" name="files" onchange="uploadFile(this,'f_0')"/>      
         </div>        
     </div>
     <div>
