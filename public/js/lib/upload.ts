@@ -48,6 +48,8 @@ class Upload{
     }
 
     public async uploadFile(obj:HTMLElement,file_id:string) {
-
+        console.log('id:'+file_id);
+        let formData = new FormData();
+        // const file:any = <HTMLInputElement>obj.files[0];
     }
 }

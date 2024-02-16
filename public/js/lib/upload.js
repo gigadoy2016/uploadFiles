@@ -78,7 +78,10 @@ var Upload = /** @class */ (function () {
     };
     Upload.prototype.uploadFile = function (obj, file_id) {
         return __awaiter(this, void 0, void 0, function () {
+            var formData;
             return __generator(this, function (_a) {
+                console.log('id:' + file_id);
+                formData = new FormData();
                 return [2 /*return*/];
             });
         });
