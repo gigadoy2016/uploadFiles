@@ -2,6 +2,7 @@ const express = require('express');
 const multer  = require('multer');
 const { Debug } = require("../class/Debug");
 const { Time } = require('../class/Time');
+const {  conn } = require('../config/dbConfig');
 const path = require('path') // เรียกใช้งาน path module
 const router = express.Router();
 const now = new Time();
@@ -17,11 +18,14 @@ const storage = multer.diskStorage({
     filename: function (req, file, callback) {
       let fileOriginalName = file.originalname;
       let typeFile = file.originalname;
+      let user_id = req.body.user_id;
+      let doc_id = req.body.doc_id;
+
       let newFileName = now.getDate(new Date());
-      // callback(null, newFileName+"_"+file.originalname) //ให้ใช้ชื่อไฟล์ original เป็นชื่อหลังอัพโหลด
       callback(null, newFileName);
+
     },
-})
+});
 const upload = multer({ storage: storage });
 
 router.get('/',function(req,res){
@@ -33,8 +37,5 @@ router.post('/', upload.array('files', 10), function (req, res, next) {  // '10'
   debug.debugLog("--Method POST -> router Upload");  
   res.send('Files uploaded successfully!');
 });
-
-
-
 
 module.exports = router;

@@ -30,6 +30,7 @@ app.get('/ajax', (req, res) => {
 app.use('/multiFiles', multiFilesRouter);
 app.use('/ajaxUpload', ajaxRouter);
 app.use('/upload', uploadRouter);
+app.use('/', uploadRouter);
 
 
 app.listen(PORT, () => {

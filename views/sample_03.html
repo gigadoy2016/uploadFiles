@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello Uploader</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
     <style>
         .document_file{
             background-color: rgb(203, 231, 177); 
@@ -28,9 +29,12 @@
         var number
         var file_id = 1;
         var doc_id = 0;
+        var user_id = '0003';
+
+        
         
         function clickMoreFile() {
-            const file_container = document.getElementById("container");    
+            const file_container = document.getElementById("container");
             var number = file_container.childElementCount;
 
             var obj = document.createElement("INPUT");
@@ -61,29 +65,38 @@
             let formData = new FormData();
             const file = obj.files[0];
             console.log(file.name);
+            let user_id = '0003';
+            let doc_id ='A001';
             
             formData.append("file", obj.files[0]);
-            let ans = await fetch(URL, {
+            formData.append('user_id', user_id);
+            formData.append('doc_id', doc_id);
+
+            const ans = fetch(URL, {
                 method: "POST", 
                 body: formData
             }).then(function(res){ 
+                console.log("--------------------------------then------");
                 console.log(res.json());
             } ).catch(function(err){
+                console.log("--------------------------------Error------");
                 console.log(err);
             }).finally(async function(res){
                 obj.remove();    
                 newElement(file_id,file.name);
-                console.log("--Final------");
+                console.log("--------------------------------Final------");
             });
-            // console.log(ans.json());
         }
         function newElement(file_id,fileName){
             // document.getElementById("filesLibrary").innerHTML='<label>'+file.name+'<label>';            
             let objDiv = document.getElementById(file_id);
             let objSpan = document.createElement("SPAN");
-            objSpan.innerHTML = fileName;
+            objSpan.innerHTML = fileName+" ";
+            let objSpan2 = document.createElement("SPAN");
+            objSpan2.innerHTML = '<a href="#" onclick="alert(\"WOW\")"><img src="../img/delete.svg" alt="Delete" width="20" height="20"/></a>';
 
             objDiv.appendChild(objSpan);
+            objDiv.appendChild(objSpan2);
         }
 
     </script>
