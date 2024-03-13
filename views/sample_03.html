@@ -73,26 +73,30 @@
             console.log(file.name);
             let user_id = '0003';
             let doc_id ='A001';
+            let f_ID;
             
             formData.append("file", obj.files[0]);
             formData.append('user_id', user_id);
             formData.append('doc_id', doc_id);
-
-            const ans = fetch(URL, {
-                method: "POST", 
-                body: formData
-            }).then(function(res){ 
-                console.log("--------------------------------then------");
-                console.log(res.json());
-            } ).catch(function(err){
-                console.log("--------------------------------Error------");
-                console.log(err);
-            }).finally(async function(res){
-                obj.remove();    
-                newElement(file_id,file.name);
-                console.log("--------------------------------Final------");
+            insertData(URL,formData)
+            .then(data => {
+                // Do something with the data here
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle any errors here
+                console.error(error);
             });
         }
+        function insertData(URL,formData){
+            return new Promise((resolve,reject)=>{
+                fetch(URL, {method: "POST", body: formData})
+                    .then(response => response.json())
+                    .then(json => resolve(json))
+                    .catch(error => reject(error));
+            });
+        }
+
         function newElement(file_id,fileName){
             // document.getElementById("filesLibrary").innerHTML='<label>'+file.name+'<label>';            
             let objDiv = document.getElementById(file_id);
@@ -101,12 +105,15 @@
             objSpan.innerHTML = fileName+" ";
             let objSpan2 = document.createElement("SPAN");
             objSpan2.className = "col-3 align-right";
-            objSpan2.innerHTML = '<a href="#" onclick="alert(\"WOW\")"><img src="../img/delete.svg" alt="Delete" width="20" height="20"/></a>';
+            objSpan2.innerHTML = `<a href="#" onclick="deleteFile('`+file_id+`')"><img src="../img/delete.svg" alt="Delete" width="20" height="20"/></a>`;
 
             objDiv.appendChild(objSpan);
             objDiv.appendChild(objSpan2);
         }
 
+        function deleteFile(file_id){
+            alert(file_id);
+        }
     </script>
     
 </head>
