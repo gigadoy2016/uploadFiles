@@ -34,7 +34,7 @@
         const URL = '../ajaxUpload/a';
         var number
         var file_id = 1;
-        var doc_id = 0;
+        var doc_id = 'A001';
         var user_id = '0003';
 
         
@@ -66,29 +66,33 @@
             console.log(files);
         }
 
-        async function uploadFile(obj,file_id) {
-            console.log('id:'+file_id);
+        async function uploadFile(obj,element_id) {
+            console.log('id:'+element_id);
             let formData = new FormData();
             const file = obj.files[0];
             console.log(file.name);
-            let user_id = '0003';
-            let doc_id ='A001';
+
             let f_ID;
             
             formData.append("file", obj.files[0]);
             formData.append('user_id', user_id);
             formData.append('doc_id', doc_id);
-            insertData(URL,formData)
+            // Type Y is insert "Enable"
+            // Type N is "Disable"
+            fileMangement(URL,formData,'Y')
             .then(data => {
                 // Do something with the data here
                 console.log(data);
+
+                newElement(element_id,data.file_id,data.fileName);
             })
             .catch(error => {
                 // Handle any errors here
                 console.error(error);
             });
         }
-        function insertData(URL,formData){
+        function fileMangement(URL,formData,type){
+            formData.append('type', type);
             return new Promise((resolve,reject)=>{
                 fetch(URL, {method: "POST", body: formData})
                     .then(response => response.json())
@@ -97,23 +101,47 @@
             });
         }
 
-        function newElement(file_id,fileName){
+        function newElement(element_id,file_id,fileName){
             // document.getElementById("filesLibrary").innerHTML='<label>'+file.name+'<label>';            
-            let objDiv = document.getElementById(file_id);
+            let objDiv = document.getElementById(element_id);
             let objSpan = document.createElement("SPAN");
             objSpan.className = "col-9";
             objSpan.innerHTML = fileName+" ";
             let objSpan2 = document.createElement("SPAN");
+            objSpan2.setAttribute("id", file_id);
             objSpan2.className = "col-3 align-right";
+            console.log("file id:"+file_id);
             objSpan2.innerHTML = `<a href="#" onclick="deleteFile('`+file_id+`')"><img src="../img/delete.svg" alt="Delete" width="20" height="20"/></a>`;
 
+            if (objDiv.hasChildNodes()) {
+                objDiv.removeChild(objDiv.children[0]);
+            }
+            
             objDiv.appendChild(objSpan);
             objDiv.appendChild(objSpan2);
         }
 
         function deleteFile(file_id){
-            alert(file_id);
+            console.log("delete:"+file_id);
+            let formData = new FormData();
+            formData.append('user_id', user_id);
+            formData.append('doc_id', doc_id);
+            formData.append('file_id', file_id);
+            fileMangement(URL,formData,'N')
+            .then(data => {
+                // Do something with the data here
+                console.log("---Delete---");
+                console.log(data);
+                let objSpan = document.getElementById(file_id);
+                objSpan.innerHTML = "-Cancel-";
+            })
+            .catch(error => {
+                // Handle any errors here
+                console.error(error);
+            });
         }
+        
+
     </script>
     
 </head>
